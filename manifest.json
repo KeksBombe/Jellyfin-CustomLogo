@@ -8,6 +8,46 @@
     "imageUrl": "https://github.com/ImLacy/Jellyfin-CustomLogo/blob/main/logo.png?raw=true",
     "versions": [
       {
+        "version": "1.0.0.9",
+        "changelist": "Fix: Copy custom logos to web path on startup - survives Docker restarts and works with all clients (Android, TV, etc.)",
+        "targetAbi": "10.11.5.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.9/CustomLogo-v1.0.0.9.zip",
+        "checksum": "A4326217FA5A58312FDD3F9101A69B44",
+        "timestamp": "2026-01-07T17:00:00"
+      },
+      {
+        "version": "1.0.0.8",
+        "changelist": "Support for Jellyfin 10.11.x - Fix hashed webpack filename interception",
+        "targetAbi": "10.11.5.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.8/CustomLogo-v1.0.0.8.zip",
+        "checksum": "250E728D3E4BBAE6D04D29D60CF73B54",
+        "timestamp": "2026-01-07T16:30:00"
+      },
+      {
+        "version": "1.0.0.7",
+        "changelist": "Fix: Intercept hashed webpack filenames (icon-transparent.{hash}.png) for proper logo replacement",
+        "targetAbi": "10.10.7.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.7/CustomLogo-v1.0.0.7.zip",
+        "checksum": "0784BCD9995A31C95725213A51D15EEE",
+        "timestamp": "2026-01-07T16:00:00"
+      },
+      {
+        "version": "1.0.0.6",
+        "changelist": "Updated to Jellyfin 10.10.6 for compatibility with 10.11.x",
+        "targetAbi": "10.10.7.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.6/CustomLogo-v1.0.0.6.zip",
+        "checksum": "A5F13E42AB4CB477B619A7B522E9EE7C",
+        "timestamp": "2026-01-07T14:42:47"
+      },
+      {
+        "version": "1.0.0.5",
+        "changelist": "Docker support: Intercept logo requests instead of modifying web files. Works with all clients (browser, mobile, TV apps).",
+        "targetAbi": "10.10.7.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.5/CustomLogo.zip",
+        "checksum": "E2A3DB444BA9A156D629957398EB52D1",
+        "timestamp": "2026-01-06T12:00:00"
+      },
+      {
         "version": "1.0.0.4",
         "changelist": "Patched image and version after installation",
         "targetAbi": "10.10.7.0",
