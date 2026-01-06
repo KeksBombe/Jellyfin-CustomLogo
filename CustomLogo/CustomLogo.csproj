@@ -14,9 +14,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Jellyfin.Controller" Version="10.10.3" />
-    <PackageReference Include="Jellyfin.Model" Version="10.10.3" />
-    <PackageReference Include="Jellyfin.Common" Version="10.10.3" />
+    <PackageReference Include="Jellyfin.Controller" Version="10.10.6" />
+    <PackageReference Include="Jellyfin.Model" Version="10.10.6" />
+    <PackageReference Include="Jellyfin.Common" Version="10.10.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />
   </ItemGroup>
 
