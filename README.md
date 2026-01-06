@@ -63,6 +63,15 @@ Try to clear your browsers cache
 Firefox : https://support.mozilla.org/en-US/kb/how-clear-firefox-cache
 Chrome : https://support.google.com/accounts/answer/32050?hl=en&co=GENIE.Platform%3DDesktop
 
-## Know Issues
-### Docker
-A missing permission error occured, even when the Jellyfin user has sufficient permissions
+For mobile apps, try restarting the app or clearing its cache.
+
+## Docker Support
+
+✅ **This plugin fully supports Docker installations!**
+
+The plugin:
+1. Stores logos in the plugin data directory (`/config/plugins/configurations/CustomLogo/`) which is always writable
+2. Automatically intercepts requests to `/web/assets/img/icon-transparent.png`, `/web/assets/img/banner-dark.png`, and `/web/assets/img/banner-light.png`
+3. Serves your custom logo when available, or falls back to the original
+
+No additional configuration or JavaScript injection needed - it just works!
