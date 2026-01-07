@@ -8,8 +8,16 @@
     "imageUrl": "https://github.com/ImLacy/Jellyfin-CustomLogo/blob/main/logo.png?raw=true",
     "versions": [
       {
+        "version": "1.0.0.8",
+        "changelist": "Fixed config page to show uploaded logo previews correctly",
+        "targetAbi": "10.10.6.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.8/CustomLogo.zip",
+        "checksum": "8EEA3172DD2A809614B08F27D191FE78",
+        "timestamp": "2026-01-07T14:00:00"
+      },
+      {
         "version": "1.0.0.7",
-        "changelist": "Fixed version display issue and added /logo/list endpoint to view all uploaded logos",
+        "changelist": "Fixed version display issue",
         "targetAbi": "10.10.6.0",
         "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.7/CustomLogo.zip",
         "checksum": "96FB3B6CC2D7BD935FCAECD16E8260CB",

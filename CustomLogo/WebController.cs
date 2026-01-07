@@ -192,48 +192,6 @@ namespace CustomLogo
             return Ok(status);
         }
 
-        /// <summary>
-        /// Gets all currently uploaded logos with their details.
-        /// </summary>
-        /// <returns>JSON with information about all uploaded logos.</returns>
-        [HttpGet("logo/list")]
-        public IActionResult GetLogos()
-        {
-            var logos = new System.Collections.Generic.List<object>();
-
-            var logoFiles = new[]
-            {
-                new { Name = "icon-transparent.png", Type = "Icon", Endpoint = "/logo/icon" },
-                new { Name = "banner-dark.png", Type = "Dark Banner", Endpoint = "/logo/banner-dark" },
-                new { Name = "banner-light.png", Type = "Light Banner", Endpoint = "/logo/banner-light" }
-            };
-
-            foreach (var logoFile in logoFiles)
-            {
-                var path = Path.Combine(_logoDirectory, logoFile.Name);
-                if (System.IO.File.Exists(path))
-                {
-                    var fileInfo = new FileInfo(path);
-                    logos.Add(new
-                    {
-                        name = logoFile.Name,
-                        type = logoFile.Type,
-                        endpoint = logoFile.Endpoint,
-                        sizeBytes = fileInfo.Length,
-                        sizeKB = Math.Round(fileInfo.Length / 1024.0, 2),
-                        uploadedAt = fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                        path = path
-                    });
-                }
-            }
-
-            return Ok(new
-            {
-                count = logos.Count,
-                logos = logos
-            });
-        }
-
         // ==================== DELETE ENDPOINTS ====================
 
         /// <summary>

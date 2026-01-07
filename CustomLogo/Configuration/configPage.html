@@ -112,36 +112,70 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Jellyfin loads plugin pages dynamically, so we need to use pageshow event
+        // or run immediately since the DOM is already ready when this script runs
+        (function() {
+            // Run immediately and also on pageshow for navigation back
+            initPage();
+            window.addEventListener('pageshow', initPage);
+        })();
+
+        function initPage() {
             // Check if logos exist and show previews
             checkLogo('/logo/icon', 'iconPreview', 'iconStatus', 'deleteIcon');
             checkLogo('/logo/banner-dark', 'bannerDarkPreview', 'bannerDarkStatus', 'deleteBannerDark');
             checkLogo('/logo/banner-light', 'bannerLightPreview', 'bannerLightStatus', 'deleteBannerLight');
 
-            // Delete handlers
-            document.getElementById('deleteIcon').addEventListener('click', () => deleteLogo('/logo/icon', 'iconPreview', 'iconStatus', 'deleteIcon'));
-            document.getElementById('deleteBannerDark').addEventListener('click', () => deleteLogo('/logo/banner-dark', 'bannerDarkPreview', 'bannerDarkStatus', 'deleteBannerDark'));
-            document.getElementById('deleteBannerLight').addEventListener('click', () => deleteLogo('/logo/banner-light', 'bannerLightPreview', 'bannerLightStatus', 'deleteBannerLight'));
-        });
+            // Delete handlers - remove old listeners first to avoid duplicates
+            var deleteIcon = document.getElementById('deleteIcon');
+            var deleteBannerDark = document.getElementById('deleteBannerDark');
+            var deleteBannerLight = document.getElementById('deleteBannerLight');
+
+            if (deleteIcon) {
+                deleteIcon.onclick = function() { deleteLogo('/logo/icon', 'iconPreview', 'iconStatus', 'deleteIcon'); };
+            }
+            if (deleteBannerDark) {
+                deleteBannerDark.onclick = function() { deleteLogo('/logo/banner-dark', 'bannerDarkPreview', 'bannerDarkStatus', 'deleteBannerDark'); };
+            }
+            if (deleteBannerLight) {
+                deleteBannerLight.onclick = function() { deleteLogo('/logo/banner-light', 'bannerLightPreview', 'bannerLightStatus', 'deleteBannerLight'); };
+            }
+        }
 
         function checkLogo(url, previewId, statusId, deleteId) {
+            var preview = document.getElementById(previewId);
+            var status = document.getElementById(statusId);
+            var deleteBtn = document.getElementById(deleteId);
+
+            if (!preview || !status || !deleteBtn) return;
+
             fetch(url)
-                .then(response => {
+                .then(function(response) {
                     if (response.ok) {
-                        document.getElementById(previewId).src = url + '?t=' + Date.now();
-                        document.getElementById(previewId).style.display = 'block';
-                        document.getElementById(statusId).textContent = 'Active';
-                        document.getElementById(statusId).className = 'status-badge status-active';
-                        document.getElementById(deleteId).style.display = 'inline-block';
+                        preview.src = url + '?t=' + Date.now();
+                        preview.style.display = 'block';
+                        status.textContent = 'Active';
+                        status.className = 'status-badge status-active';
+                        deleteBtn.style.display = 'inline-block';
+                    } else {
+                        preview.style.display = 'none';
+                        status.textContent = 'Not set';
+                        status.className = 'status-badge status-inactive';
+                        deleteBtn.style.display = 'none';
                     }
                 })
-                .catch(() => {});
+                .catch(function() {
+                    preview.style.display = 'none';
+                    status.textContent = 'Not set';
+                    status.className = 'status-badge status-inactive';
+                    deleteBtn.style.display = 'none';
+                });
         }
 
         function deleteLogo(url, previewId, statusId, deleteId) {
             if (confirm('Are you sure you want to delete this logo?')) {
                 fetch(url, { method: 'DELETE' })
-                    .then(response => {
+                    .then(function(response) {
                         if (response.ok) {
                             document.getElementById(previewId).style.display = 'none';
                             document.getElementById(statusId).textContent = 'Not set';
@@ -149,7 +183,7 @@
                             document.getElementById(deleteId).style.display = 'none';
                         }
                     })
-                    .catch(err => alert('Error deleting logo: ' + err));
+                    .catch(function(err) { alert('Error deleting logo: ' + err); });
             }
         }
     </script>
