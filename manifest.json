@@ -12,7 +12,7 @@
         "changelist": "Fixed version display issue and added /logo/list endpoint to view all uploaded logos",
         "targetAbi": "10.10.6.0",
         "sourceUrl": "https://github.com/ImLacy/Jellyfin-CustomLogo/releases/download/1.0.0.7/CustomLogo.zip",
-        "checksum": "ECF8C921482F897154070C6DA8E2FDD8",
+        "checksum": "BBD42AB9C19724D01EDE6595CBE88909",
         "timestamp": "2026-01-07T12:00:00"
       },
       {
