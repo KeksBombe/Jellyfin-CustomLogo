@@ -16,6 +16,14 @@
         "timestamp": "2026-01-07T19:00:00"
       },
       {
+        "version": "1.0.0.13",
+        "changelist": "Added debug logging to diagnose middleware execution (Jellyfin 10.10.6 compatible)",
+        "targetAbi": "10.10.6.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.13/CustomLogo-v1.0.0.13.zip",
+        "checksum": "BF1E32238BC2993A746B36FF017582DB",
+        "timestamp": "2026-01-07T19:00:00"
+      },
+      {
         "version": "1.0.0.12",
         "changelist": "Fixed middleware regex to also intercept /web/assets/img/ paths",
         "targetAbi": "10.10.6.0",
