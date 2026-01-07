@@ -92,15 +92,27 @@ namespace CustomLogo
         }
 
         // ==================== INTERCEPT ORIGINAL LOGO PATHS ====================
+        // Jellyfin Web uses hashed filenames like: icon-transparent.baba78f2a106d9baee83.png
+        // We need to intercept these patterns
 
         /// <summary>
-        /// Intercepts requests for icon-transparent.png and serves custom logo if available.
+        /// Intercepts requests for icon-transparent.png (with optional hash) and serves custom logo if available.
         /// </summary>
         /// <returns>Custom or original logo.</returns>
         [HttpGet("web/assets/img/icon-transparent.png")]
         public IActionResult GetIconTransparent()
         {
             return ServeLogoOrFallback("icon-transparent.png", "assets/img/icon-transparent.png");
+        }
+
+        /// <summary>
+        /// Intercepts requests for icon-transparent with hash (e.g., icon-transparent.abc123.png).
+        /// </summary>
+        /// <returns>Custom or original logo.</returns>
+        [HttpGet("web/icon-transparent.{hash}.png")]
+        public IActionResult GetIconTransparentHashed(string hash)
+        {
+            return ServeLogoWithValidatedHash("icon-transparent.png", "icon-transparent", hash);
         }
 
         /// <summary>
@@ -114,6 +126,16 @@ namespace CustomLogo
         }
 
         /// <summary>
+        /// Intercepts requests for banner-dark with hash.
+        /// </summary>
+        /// <returns>Custom or original banner.</returns>
+        [HttpGet("web/banner-dark.{hash}.png")]
+        public IActionResult GetBannerDarkHashed(string hash)
+        {
+            return ServeLogoWithValidatedHash("banner-dark.png", "banner-dark", hash);
+        }
+
+        /// <summary>
         /// Intercepts requests for banner-light.png and serves custom banner if available.
         /// </summary>
         /// <returns>Custom or original banner.</returns>
@@ -121,6 +143,16 @@ namespace CustomLogo
         public IActionResult GetBannerLightOriginal()
         {
             return ServeLogoOrFallback("banner-light.png", "assets/img/banner-light.png");
+        }
+
+        /// <summary>
+        /// Intercepts requests for banner-light with hash.
+        /// </summary>
+        /// <returns>Custom or original banner.</returns>
+        [HttpGet("web/banner-light.{hash}.png")]
+        public IActionResult GetBannerLightHashed(string hash)
+        {
+            return ServeLogoWithValidatedHash("banner-light.png", "banner-light", hash);
         }
 
         // ==================== DIRECT LOGO ENDPOINTS ====================
@@ -305,11 +337,76 @@ namespace CustomLogo
             if (System.IO.File.Exists(customPath))
             {
                 var bytes = System.IO.File.ReadAllBytes(customPath);
+                var fileInfo = new FileInfo(customPath);
+
+                // Set cache control headers to prevent caching and ensure fresh images
+                Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                Response.Headers["Pragma"] = "no-cache";
+                Response.Headers["Expires"] = "0";
+                Response.Headers["Last-Modified"] = fileInfo.LastWriteTimeUtc.ToString("R", CultureInfo.InvariantCulture);
+
                 return File(bytes, "image/png");
             }
 
             // Otherwise, serve the original from the web path
             var originalPath = Path.Combine(_appPaths.WebPath, originalRelativePath);
+            if (System.IO.File.Exists(originalPath))
+            {
+                var bytes = System.IO.File.ReadAllBytes(originalPath);
+                return File(bytes, "image/png");
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Serves logo with validated hash parameter.
+        /// Hash is sanitized to only contain alphanumeric characters.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA3003:Review code for file path injection vulnerabilities", Justification = "Hash is sanitized to alphanumeric only, no path traversal possible")]
+        private IActionResult ServeLogoWithValidatedHash(string customFileName, string baseName, string hash)
+        {
+            // Sanitize hash to only contain alphanumeric characters (removes any path traversal attempts)
+            if (string.IsNullOrEmpty(hash) || hash.Length > 32)
+            {
+                return NotFound();
+            }
+
+            var sanitizedHash = new System.Text.StringBuilder(hash.Length);
+            foreach (char c in hash)
+            {
+                if (char.IsLetterOrDigit(c))
+                {
+                    sanitizedHash.Append(c);
+                }
+            }
+
+            if (sanitizedHash.Length == 0 || sanitizedHash.Length != hash.Length)
+            {
+                return NotFound();
+            }
+
+            var safeHash = sanitizedHash.ToString();
+            var customPath = Path.Combine(_logoDirectory, customFileName);
+
+            // If custom logo exists, serve it
+            if (System.IO.File.Exists(customPath))
+            {
+                var bytes = System.IO.File.ReadAllBytes(customPath);
+                var fileInfo = new FileInfo(customPath);
+
+                // Set cache control headers to prevent caching and ensure fresh images
+                Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                Response.Headers["Pragma"] = "no-cache";
+                Response.Headers["Expires"] = "0";
+                Response.Headers["Last-Modified"] = fileInfo.LastWriteTimeUtc.ToString("R", CultureInfo.InvariantCulture);
+
+                return File(bytes, "image/png");
+            }
+
+            // Otherwise, serve the original from the web path (with sanitized hash)
+            var originalFileName = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.png", baseName, safeHash);
+            var originalPath = Path.Combine(_appPaths.WebPath, originalFileName);
             if (System.IO.File.Exists(originalPath))
             {
                 var bytes = System.IO.File.ReadAllBytes(originalPath);

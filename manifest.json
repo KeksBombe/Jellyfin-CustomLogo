@@ -8,6 +8,14 @@
     "imageUrl": "https://github.com/ImLacy/Jellyfin-CustomLogo/blob/main/logo.png?raw=true",
     "versions": [
       {
+        "version": "1.0.0.10",
+        "changelist": "Fixed logo replacement for web and Android apps - now intercepts hashed filenames (icon-transparent.*.png)",
+        "targetAbi": "10.10.6.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.10/CustomLogo.zip",
+        "checksum": "2F92944E0EFDB0DDF16F791D91E063EF",
+        "timestamp": "2026-01-07T16:00:00"
+      },
+      {
         "version": "1.0.0.9",
         "changelist": "Added /logo/list HTML page to view all uploaded logos with previews",
         "targetAbi": "10.10.6.0",
