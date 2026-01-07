@@ -9,10 +9,10 @@
     "versions": [
       {
         "version": "1.0.0.7",
-        "changelist": "Docker support: Intercept logo requests instead of modifying web files. Works with all clients (browser, mobile, TV apps).",
+        "changelist": "Fixed version display issue and added /logo/list endpoint to view all uploaded logos",
         "targetAbi": "10.10.6.0",
-        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.7/CustomLogo.zip",
-        "checksum": "E2A3DB444BA9A156D629957398EB52D1",
+        "sourceUrl": "https://github.com/ImLacy/Jellyfin-CustomLogo/releases/download/1.0.0.7/CustomLogo.zip",
+        "checksum": "ECF8C921482F897154070C6DA8E2FDD8",
         "timestamp": "2026-01-07T12:00:00"
       },
       {
