@@ -192,6 +192,56 @@ namespace CustomLogo
             return Ok(status);
         }
 
+        /// <summary>
+        /// Gets all currently uploaded logos with clickable URLs.
+        /// </summary>
+        /// <returns>HTML page with logo previews.</returns>
+        [HttpGet("logo/list")]
+        public IActionResult GetLogos()
+        {
+            var html = new System.Text.StringBuilder();
+            html.Append("<!DOCTYPE html><html><head><title>Custom Logos</title>");
+            html.Append("<style>body{font-family:sans-serif;background:#1c1c1e;color:#fff;padding:20px;}");
+            html.Append(".logo-item{background:#2a2a2e;padding:20px;margin:10px 0;border-radius:8px;}");
+            html.Append(".logo-item h3{margin:0 0 10px 0;}");
+            html.Append(".logo-item img{max-width:300px;max-height:150px;background:#000;padding:10px;border-radius:4px;}");
+            html.Append(".not-set{color:#888;}</style></head><body>");
+            html.Append("<h1>Custom Logo - Uploaded Images</h1>");
+
+            var logoFiles = new[]
+            {
+                new { Name = "icon-transparent.png", Type = "Icon", Endpoint = "/logo/icon" },
+                new { Name = "banner-dark.png", Type = "Dark Banner", Endpoint = "/logo/banner-dark" },
+                new { Name = "banner-light.png", Type = "Light Banner", Endpoint = "/logo/banner-light" }
+            };
+
+            foreach (var logoFile in logoFiles)
+            {
+                var path = Path.Combine(_logoDirectory, logoFile.Name);
+                html.Append(CultureInfo.InvariantCulture, $"<div class='logo-item'><h3>{logoFile.Type}</h3>");
+
+                if (System.IO.File.Exists(path))
+                {
+                    var fileInfo = new FileInfo(path);
+                    html.Append(CultureInfo.InvariantCulture, $"<img src='{logoFile.Endpoint}?t={DateTime.Now.Ticks}' alt='{logoFile.Type}'/>");
+                    html.Append(CultureInfo.InvariantCulture, $"<p>Size: {Math.Round(fileInfo.Length / 1024.0, 2)} KB | ");
+                    html.Append(CultureInfo.InvariantCulture, $"Modified: {fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)}</p>");
+                    html.Append(CultureInfo.InvariantCulture, $"<p>URL: <a href='{logoFile.Endpoint}' style='color:#4fc3f7;'>{logoFile.Endpoint}</a></p>");
+                }
+                else
+                {
+                    html.Append("<p class='not-set'>Not set</p>");
+                }
+
+                html.Append("</div>");
+            }
+
+            html.Append("<p><a href='/web/#/dashboard/plugins' style='color:#4fc3f7;'>← Back to Plugins</a></p>");
+            html.Append("</body></html>");
+
+            return Content(html.ToString(), "text/html");
+        }
+
         // ==================== DELETE ENDPOINTS ====================
 
         /// <summary>
