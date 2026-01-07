@@ -13,9 +13,25 @@ namespace CustomLogo
     {
         private readonly RequestDelegate _next;
         private readonly string _logoDirectory;
-        private static readonly Regex IconPattern = new Regex(@"^/web/icon-transparent(\.[a-zA-Z0-9]+)?\.png$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex BannerDarkPattern = new Regex(@"^/web/banner-dark(\.[a-zA-Z0-9]+)?\.png$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex BannerLightPattern = new Regex(@"^/web/banner-light(\.[a-zA-Z0-9]+)?\.png$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        // Match various paths for icon-transparent:
+        // /web/icon-transparent.png
+        // /web/icon-transparent.hash.png
+        // /web/assets/img/icon-transparent.png
+        // /web/assets/img/icon-transparent.hash.png
+        private static readonly Regex IconPattern = new Regex(
+            @"^/web/(assets/img/)?icon-transparent(\.[a-zA-Z0-9]+)?\.png$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        // Match various paths for banner-dark:
+        private static readonly Regex BannerDarkPattern = new Regex(
+            @"^/web/(assets/img/)?banner-dark(\.[a-zA-Z0-9]+)?\.png$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        // Match various paths for banner-light:
+        private static readonly Regex BannerLightPattern = new Regex(
+            @"^/web/(assets/img/)?banner-light(\.[a-zA-Z0-9]+)?\.png$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LogoMiddleware"/> class.

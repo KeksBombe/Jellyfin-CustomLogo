@@ -8,6 +8,14 @@
     "imageUrl": "https://github.com/ImLacy/Jellyfin-CustomLogo/blob/main/logo.png?raw=true",
     "versions": [
       {
+        "version": "1.0.0.12",
+        "changelist": "Fixed middleware regex to also intercept /web/assets/img/ paths",
+        "targetAbi": "10.10.6.0",
+        "sourceUrl": "https://github.com/KeksBombe/Jellyfin-CustomLogo/releases/download/1.0.0.12/CustomLogo.zip",
+        "checksum": "29095B984E2DB67ACBEA1472C1FCA657",
+        "timestamp": "2026-01-07T18:00:00"
+      },
+      {
         "version": "1.0.0.11",
         "changelist": "Fixed logo serving - added middleware to intercept requests BEFORE static file handler",
         "targetAbi": "10.10.6.0",
